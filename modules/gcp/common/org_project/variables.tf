@@ -1,4 +1,14 @@
 /* 
+    Create the default network subnets. If omitted the subnets that typically
+    get created when the GCP project is created will not be created. 
+ */
+variable "auto_create_network" {
+  type        = bool
+  default     = false
+  description = "Default VPC network creation. Creates subnets in all regions. Default value is false"
+}
+
+/* 
     The Google Project Name. User friendly name that appears
     on in Google Cloud console. "My New Project" for example
  */
