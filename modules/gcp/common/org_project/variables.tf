@@ -9,6 +9,16 @@ variable "auto_create_network" {
 }
 
 /* 
+    Billing account associated with the project. This will be found in "billing"
+    section of the console under "Billing account ID"
+ */
+variable "billing_account" {
+  type        = string
+  default     = null
+  description = "Billing account ID. Found in the 'billing' section under 'Billing account Id'"
+}
+
+/* 
     The Google Project Name. User friendly name that appears
     on in Google Cloud console. "My New Project" for example
  */
@@ -27,7 +37,7 @@ variable "org_id" {
 
 /* 
     Globally unique project ID that will be used as the
-    resource ID within Google Cloud
+    resource ID within Google Cloud. my-new-project for example
  */
 variable "project_id" {
     type = string

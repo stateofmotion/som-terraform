@@ -7,6 +7,7 @@ resource "google_project" "org_project" {
   project_id          = var.project_id
   org_id              = var.org_id
   auto_create_network = var.auto_create_network
+  billing_account     = var.billing_account
 }
 
 output "name" {
