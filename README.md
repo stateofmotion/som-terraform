@@ -66,6 +66,15 @@ module "my_vpc_connector" {
 }
 ```
 
+## Cloud Run
+Basic example usage:
+```
+module "my_cloudrun_instance" {
+    source        = "github.com/stateofmotion/som-terraform/modules/gcp/common/cloudrun
+    region        = ""
+}
+```
+
 # Components
 
 ## Single Region VPC
