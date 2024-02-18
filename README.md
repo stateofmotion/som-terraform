@@ -53,6 +53,19 @@ locals {
 }
 ```
 
+## VPC Connector
+
+Basic example usage:
+```
+module "my_vpc_connector" {
+    source        = "github.com/stateofmotion/som-terraform/modules/gcp/common/vpc_connector
+    network_name  = ""
+    subnet_name   = ""
+    project_id    = ""
+    region        = ""
+}
+```
+
 # Components
 
 ## Single Region VPC
