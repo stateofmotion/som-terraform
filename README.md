@@ -64,6 +64,10 @@ module "my_vpc_connector" {
     project_id    = ""
     region        = ""
 }
+
+locals {
+  connector_id = module.my_vpc_connector.connector_id
+}
 ```
 
 ## Cloud Run
@@ -72,6 +76,11 @@ Basic example usage:
 module "my_cloudrun_instance" {
     source        = "github.com/stateofmotion/som-terraform/modules/gcp/common/cloudrun
     region        = ""
+}
+
+locals {
+  name = module.my_cloudrun_instance.name
+  uri  = module.my_cloudrun_instance.uri
 }
 ```
 
