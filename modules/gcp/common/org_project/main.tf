@@ -9,10 +9,6 @@ resource "google_project" "org_project" {
   auto_create_network = var.auto_create_network
 }
 
-output "project_id" {
-  value = google_project.org_project.project_id
-}
-
 output "name" {
   value = google_project.org_project.name
 }
@@ -25,3 +21,6 @@ output "org_id" {
   value = google_project.org_project.auto_create_network
 }
 
+output "project_id" {
+  value = google_project.org_project.project_id
+}

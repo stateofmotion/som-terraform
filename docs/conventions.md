@@ -50,3 +50,6 @@ Each README.md file should also contain a usage example of how to use the module
 ## Assignment spacing
 Assignment spacing should confirm to equal spacing from the assignment operator on with the assigment operator aligned for each field in the resource.
 
+## Output Variables
+Output variables should be alphabetized for easy identification, and located at the bottom of the terraform file.
+
