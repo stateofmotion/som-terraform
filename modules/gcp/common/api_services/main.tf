@@ -9,6 +9,3 @@ resource "google_project_service" "project" {
   service                    = each.value
 }
 
-output "project_id" {
-  value = google_project_service.project.project
-}
