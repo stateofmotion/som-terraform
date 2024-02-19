@@ -1,4 +1,13 @@
 /* 
+   Allow unauthenticated requests to Cloud Run
+ */
+variable "allow_unauthenticated" {
+  default     = false
+  description = "Allow unauthenticated requests"
+  type        = bool
+}
+
+/* 
    Number of CPUs to allocate to the cloud run service
  */
 variable "cpu" {

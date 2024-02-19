@@ -29,6 +29,16 @@ resource "google_cloud_run_v2_service" "default" {
   }
 }
 
+resource "google_cloud_run_service_iam_binding" "default" {
+  count    = var.allow_unauthenticated ? 1 : 0
+  location = google_cloud_run_v2_service.default.location
+  service  = google_cloud_run_v2_service.default.name
+  role     = "roles/run.invoker"
+  members = [
+    "allUsers"
+  ]
+}
+
 output "name" {
   value = google_cloud_run_v2_service.default.name
 }
@@ -36,3 +46,4 @@ output "name" {
 output "uri" {
   value = google_cloud_run_v2_service.default.uri
 }
+
