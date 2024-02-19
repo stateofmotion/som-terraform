@@ -1,3 +1,6 @@
+/* 
+   Number of CPUs to allocate to the cloud run service
+ */
 variable "cpu" {
   default     = "2"
   description = "Number of CPUs to use"

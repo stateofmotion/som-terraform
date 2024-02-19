@@ -84,6 +84,26 @@ locals {
 }
 ```
 
+## API Service
+Basic example usage:
+```
+module "my_api_service" {
+  project_id    = ""
+  source        = "github.com/stateofmotion/som-terraform/modules/gcp/common/services      = "run.googleapis.com"
+}
+```
+
+## API Services
+Basic exmaple usage:
+```
+module "my_api_services" {
+  project_id    = ""
+  source        = "github.com/stateofmotion/som-terraform/modules/gcp/common/services  = [
+    "run.googleapis.com",
+  ]
+}
+```
+
 # Components
 
 ## Single Region VPC
