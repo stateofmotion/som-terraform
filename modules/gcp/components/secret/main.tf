@@ -15,8 +15,8 @@ output "data" {
   value = module.secret_value.secret_data
 }
 
-output "name" {
-  value = module.secret_key.name
+output "id" {
+  value = module.secret_key.id
 }
 
 output "secret_id" {
