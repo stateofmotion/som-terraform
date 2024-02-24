@@ -11,18 +11,18 @@ module "secret_value" {
   source        = "../../common/secret_version"
 }
 
-output "name" {
-  value = module.secret_value.name
-}
-
 output "data" {
-  value = module.secret_value.secret_data
+  value = module.secret_value.data
 }
 
 output "id" {
   value = module.secret_key.id
 }
 
+output "name" {
+  value = module.secret_value.name
+}
+
 output "secret_id" {
-  value = module.secret_value.secret_id
+  value = module.secret_key.secret_id
 }
