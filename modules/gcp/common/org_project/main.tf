@@ -1,3 +1,16 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.17.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 5.17.0"
+    }
+  }
+}
+
 /*
   Create a new GCP project within an organization given the
   organization ID
