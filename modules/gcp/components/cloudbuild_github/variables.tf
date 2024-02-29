@@ -50,8 +50,7 @@ variable "region" {
 }
 
 variable "repositories" {
-  default  = null
-  nullable = true
+  default  = {}
   type = map(object({
     remote_uri     = string
     build_triggers = optional(map(object({
