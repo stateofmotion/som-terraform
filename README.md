@@ -126,3 +126,16 @@ locals {
   subnet_name   = module.my_single_region_network.subnet_name
 }
 ```
+
+## Cloudbuild Connection
+This will take in the Github access token and create a secret to hold the token. This is required to automate the connection. The name of the secret will default to 'github-access-token'. The following is the most simple usage:
+
+```
+module "my_github_cloudbuild_connection" {
+  app_installation_id = 00000000
+  github_token        = 
+  project_id          = ""
+  region              = ""
+  source              = "github.com/stateofmotion/som-terraform/modules/gcp/components/cloubuild_github_connection"
+}
+```
