@@ -48,19 +48,3 @@ variable "region" {
   description = "Region to create the Cloud Run service in"
   type        = string
 }
-
-variable "repositories" {
-  nullable = true
-  type = map(object({
-    remote_uri     = string
-    build_triggers = optional(map(object({
-      type            = string
-      name            = string
-      description     = string
-      build_file_path = string
-      trigger_match   = string
-      disabled        = bool
-      substitutions   = map(string)
-    })))
-  }))
-}
