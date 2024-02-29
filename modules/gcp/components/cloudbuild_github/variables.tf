@@ -50,6 +50,7 @@ variable "region" {
 }
 
 variable "repositories" {
+  default  = null
   nullable = true
   type = map(object({
     remote_uri     = string
