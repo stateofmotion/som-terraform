@@ -54,13 +54,12 @@ variable "repositories" {
   type = map(object({
     remote_uri     = string
     build_triggers = optional(map(object({
-      type            = string
-      name            = string
-      description     = string
-      build_file_path = string
-      trigger_match   = string
-      disabled        = bool
-      substitutions   = map(string)
+      disabled               = optional(bool)
+      filename               = string
+      name                   = string
+      substitutions          = optional(map(string))
+      trigger_match_pattern  = string
+      type                   = optional(string)
     })))
   }))
 }

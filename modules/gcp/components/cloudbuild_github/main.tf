@@ -27,4 +27,5 @@ module "repo_and_triggers" {
   parent_connection   = module.my_github_cloudbuild_connection.github_connection_id
   repo_name           = each.key
   remote_uri          = each.value["remote_uri"]
+  build_triggers      = each.value["build_triggers"]
 }

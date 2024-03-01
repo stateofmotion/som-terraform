@@ -23,19 +23,24 @@ resource "google_cloudbuild_trigger" "trigger" {
   project       = var.project_id
   substitutions = var.substitutions
 
-  dynamic "push" {
-    for_each = var.trigger_type == "tag" ? [1] : []
+  repository_event_config {
+    repository = var.repository_id
 
-    content {
-      tag = var.trigger_match_pattern
+
+    dynamic "push" {
+      for_each = var.trigger_type == "tag" ? [1] : []
+
+      content {
+        tag = var.trigger_match_pattern
+      }
     }
-  }
 
-  dynamic "push" {
-    for_each = var.trigger_type == "branch" ? [1] : []
+    dynamic "push" {
+      for_each = var.trigger_type == "branch" ? [1] : []
 
-    content {
-      branch = var.trigger_match_pattern
+      content {
+        branch = var.trigger_match_pattern
+      }
     }
   }
 }
