@@ -28,11 +28,11 @@ module "build_triggers" {
 
   disabled              = each.value.disabled
   filename              = each.value.filename
-  name                  = each.value.name
+  name                  = coalesce(each.value.name, each.key)
   project_id            = var.project_id
   region                = var.region
-  repository_id         = module.repo.remote_uri
+  repository_id         = module.repo.id
   substitutions         = each.value.substitutions
   trigger_match_pattern = each.value.trigger_match_pattern
-  trigger_type          = each.value.trigger_type
+  trigger_type          = each.value.type
 }

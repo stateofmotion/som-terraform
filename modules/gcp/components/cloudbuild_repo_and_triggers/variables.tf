@@ -42,13 +42,14 @@ variable "remote_uri" {
 
 variable "build_triggers" {
   nullable    = true
+  default     = null
   description = "Cloudbuild trigger definition"
-  type = object({
+  type = map(object({
     disabled               = optional(bool)
     filename               = string
-    name                   = string
+    name                   = optional(string)
     substitutions          = optional(map(string))
     trigger_match_pattern  = string
-    type                   = optional(string)
-  })
+    type                   = optional(string, "branch")
+  }))
 }

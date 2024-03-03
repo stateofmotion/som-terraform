@@ -56,10 +56,10 @@ variable "repositories" {
     build_triggers = optional(map(object({
       disabled               = optional(bool)
       filename               = string
-      name                   = string
+      name                   = optional(string)
       substitutions          = optional(map(string))
       trigger_match_pattern  = string
       type                   = optional(string)
-    })))
+    })), null)
   }))
 }
