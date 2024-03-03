@@ -12,10 +12,27 @@ terraform {
 }
 
 module "repo" {
+  source            = "../../common/cloudbuild_repository"
+  
   name              = var.repo_name
   parent_connection = var.parent_connection
   project_id        = var.project_id
   region            = var.region
   remote_uri        = var.remote_uri
-  source            = "../../common/cloudbuild_repository"
+}
+
+module "build_triggers" {
+  source                = "../../common/cloudbuild_trigger"
+
+  for_each              = var.build_triggers != null ? var.build_triggers : tomap({})
+
+  disabled              = each.value.disabled
+  filename              = each.value.filename
+  name                  = coalesce(each.value.name, each.key)
+  project_id            = var.project_id
+  region                = var.region
+  repository_id         = module.repo.id
+  substitutions         = each.value.substitutions
+  trigger_match_pattern = each.value.trigger_match_pattern
+  trigger_type          = each.value.type
 }

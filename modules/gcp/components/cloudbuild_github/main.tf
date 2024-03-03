@@ -20,11 +20,14 @@ module "my_github_cloudbuild_connection" {
 }
 
 module "repo_and_triggers" {
+  source              = "../cloudbuild_repo_and_triggers"
+  
   for_each            = var.repositories
+
+  build_triggers      = each.value.build_triggers
+  parent_connection   = module.my_github_cloudbuild_connection.github_connection_id
   project_id          = var.project_id
   region              = var.region
-  source              = "../cloudbuild_repo_and_triggers"
-  parent_connection   = module.my_github_cloudbuild_connection.github_connection_id
-  repo_name           = each.key
   remote_uri          = each.value["remote_uri"]
+  repo_name           = each.key
 }

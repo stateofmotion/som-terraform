@@ -39,3 +39,17 @@ variable "remote_uri" {
   description = "Remote URI for the Github repository, i.e. https://github.com/ORG/REPO.git"
   type        = string
 }
+
+variable "build_triggers" {
+  nullable    = true
+  default     = null
+  description = "Cloudbuild trigger definition"
+  type = map(object({
+    disabled               = optional(bool)
+    filename               = string
+    name                   = optional(string)
+    substitutions          = optional(map(string))
+    trigger_match_pattern  = string
+    type                   = optional(string, "branch")
+  }))
+}
