@@ -2,6 +2,7 @@
    Description of the artifact registry repository
  */
 variable "description" {
+  default     = null
   nullable    = true
   description = "Artifact registry repository description"
   type        = string
