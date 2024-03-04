@@ -23,3 +23,11 @@ resource "google_artifact_registry_repository" "repository" {
   description   = var.locals.description
   format        = var.format
 }
+
+output "id" {
+  value = google_artifact_registry_repository.repository.id
+}
+
+output "name" {
+  value = google_artifact_registry_repository.repository.name
+}
