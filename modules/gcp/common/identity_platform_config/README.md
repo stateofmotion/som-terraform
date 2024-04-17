@@ -1,2 +1,5 @@
+## API Services
+Requires the project holding the service account to have the following APIs enabled:
+- identitytoolkit.googleapis.com
+
 ## IAM
-Requires enabling the `identitytoolkit.googleapis.com` api
