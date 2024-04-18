@@ -7,8 +7,17 @@ terraform {
   }
 }
 
-resource "google_service_account_iam_member" "service_account_role" {
-  service_account_id = data.google_compute_default_service_account.default.name
-  role               = "roles/iam.serviceAccountUser"
-  member             = "serviceAccount:${google_service_account.sa.email}"
+resource "google_project_iam_policy" "project" {
+  project     = var.project_id
+  policy_data = data.google_iam_policy.admin.policy_data
+}
+
+data "google_iam_policy" "admin" {
+  binding {
+    role = var.service_account_role
+
+    members = [
+      "serviceAccount:${var.service_account_email}",
+    ]
+  }
 }
