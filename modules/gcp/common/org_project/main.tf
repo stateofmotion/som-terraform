@@ -21,6 +21,10 @@ resource "google_project" "org_project" {
   org_id              = var.org_id
   auto_create_network = var.auto_create_network
   billing_account     = var.billing_account
+  
+  labels = {
+    "firebase" = "enabled"
+  }
 }
 
 output "name" {
