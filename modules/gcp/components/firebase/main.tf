@@ -41,6 +41,7 @@ module "api_services" {
   project_id = var.project_id
   services   = [
     "firestore.googleapis.com",
+    "firebasestorage.googleapis.com"
   ]
 
   depends_on = [ module.org_project ]
