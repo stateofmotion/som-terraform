@@ -10,3 +10,70 @@ terraform {
     }
   }
 }
+
+module "org_project" {
+  source          = "../../common/org_project"
+  name            = var.project_name
+  project_id      = var.project_id
+  org_id          = var.org_id
+  billing_account = var.billing_account
+}
+
+module "terraform_service_account" {
+  source = "../../common/project_iam_member"
+  project_id            = var.project_id
+  member                = "serviceAccount:${var.terraform_service_account_email}"
+  service_account_role  = var.terraform_service_account_role 
+
+  depends_on = [ module.org_project ]
+}
+
+module "firebase_project" {
+  source = "../../common/firebase_project"
+ 
+  project_id = var.project_id
+
+  depends_on = [ module.terraform_service_account ]
+}
+
+module "firestore_database" {
+  source     = "../../common/firebase_firestore"
+
+  project_id = var.project_id
+
+  depends_on = [ 
+    module.firebase_project
+  ]
+}
+
+module "app_engine" {
+  source = "../../common/app_engine"
+  project_id            = var.project_id
+
+  depends_on = [ 
+    module.firestore_database, 
+  ]
+}
+
+module "firebase_storage_bucket" {
+  source = "../../common/firebase_storage_bucket"
+ 
+  project_id = var.project_id
+  bucket_id  = module.app_engine.default_bucket
+
+  depends_on = [ 
+    module.app_engine
+  ]
+}
+
+module "idp_config" {
+  source = "../../common/identity_platform_config"
+
+  project_id = var.project_id
+
+  depends_on = [ module.terraform_service_account]
+}
+
+output "project_number" {
+  value = module.org_project.number
+}
