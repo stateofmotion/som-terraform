@@ -36,13 +36,24 @@ module "firebase_project" {
   depends_on = [ module.terraform_service_account ]
 }
 
+module "api_services" {
+  source     = "../../common/api_services"
+  project_id = var.project_id
+  services   = [
+    "firestore.googleapis.com",
+  ]
+
+  depends_on = [ module.org_project ]
+}
+
 module "firestore_database" {
   source     = "../../common/firebase_firestore"
 
   project_id = var.project_id
 
   depends_on = [ 
-    module.firebase_project
+    module.firebase_project,
+    module.api_services
   ]
 }
 
