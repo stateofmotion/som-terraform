@@ -18,7 +18,7 @@ resource "random_string" "bucket_suffix" {
 
 module "storage_bucket" {
   source            = "../storage_bucket"
-  name              = "${replace(var.project_id, "-", "_")}_bucket_${random_string.bucket_suffix.result}"
+  name              = "${replace(var.project_id, "-", "_")}_bucket_${lower(random_string.bucket_suffix.result)}"
   project_id        = var.project_id
 }
 
