@@ -115,15 +115,18 @@ module "dns_managed_zone" {
   depends_on = [ module.api_services ]
 }
 
-# module "custom_domain" {
-#   source = "../../common/firebase_custom_domain"
+module "custom_domain" {
+  source = "../../common/firebase_custom_domain"
 
-#   project_id    = var.project_id
-#   site_id       = module.firebase_hosting_site.site_id
-#   custom_domain = ""
+  project_id    = var.project_id
+  site_id       = module.firebase_hosting_site.site_id
+  custom_domain = var.domain
 
-#   depends_on = [ module.firebase_hosting_site ]
-# }
+  depends_on = [ 
+    module.firebase_hosting_site,
+    module.dns_managed_zone
+  ]
+}
 
 output "project_number" {
   value = module.org_project.number
