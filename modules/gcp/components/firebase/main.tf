@@ -41,7 +41,8 @@ module "api_services" {
   project_id = var.project_id
   services   = [
     "firestore.googleapis.com",
-    "firebasestorage.googleapis.com"
+    "firebasestorage.googleapis.com",
+    "firebasehosting.googleapis.com"
   ]
 
   depends_on = [ module.org_project ]
@@ -100,6 +101,8 @@ module "firebase_hosting_site" {
   project_id = var.project_id
   site_id    = "${var.project_id}-site-app"
   app_id     = module.web_app.app_id
+
+  depends_on = [ module.api_services ]
 }
 
 output "project_number" {
