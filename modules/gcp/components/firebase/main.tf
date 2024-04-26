@@ -99,7 +99,7 @@ module "firebase_hosting_site" {
 
   project_id = var.project_id
   site_id    = "${var.project_id}-site-app"
-  app_id     = "${module.web_app.app_id}-app"
+  app_id     = module.web_app.app_id
 }
 
 output "project_number" {
