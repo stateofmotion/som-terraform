@@ -42,7 +42,8 @@ module "api_services" {
   services   = [
     "firestore.googleapis.com",
     "firebasestorage.googleapis.com",
-    "firebasehosting.googleapis.com"
+    "firebasehosting.googleapis.com",
+    "dns.googleapis.com"
   ]
 
   depends_on = [ module.org_project ]
