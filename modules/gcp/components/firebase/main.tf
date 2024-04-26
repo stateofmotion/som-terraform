@@ -97,3 +97,7 @@ module "web_app" {
 output "project_number" {
   value = module.org_project.number
 }
+
+output "app_id" {
+  value = module.web_app.app_id
+}
