@@ -109,7 +109,7 @@ module "dns_managed_zone" {
   source = "../../common/dns_managed_zone"
 
   project_id = var.project_id
-  dns_name   = var.domain
+  dns_name   = "${var.domain}."
 
   depends_on = [ module.api_services ]
 }

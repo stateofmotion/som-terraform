@@ -53,13 +53,13 @@ variable "terraform_service_account_role" {
   description = "Terraform service account role for governing the terraform resources"
 }
 
-/* 
- * Custom URL
- */
-variable "custom_domain" {
-  description = "Custom domain to use for hosting"
-  type        = string
-}
+# /* 
+#  * Custom URL
+#  */
+# variable "custom_domain" {
+#   description = "Custom domain to use for hosting"
+#   type        = string
+# }
 
 /* 
  * Domain name. This is the root of the domain to use in
