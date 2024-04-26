@@ -94,6 +94,14 @@ module "web_app" {
   depends_on = [ module.firebase_project ]
 }
 
+module "firebase_hosting_site" {
+  source = "../../common/firebase_hosting_site"
+
+  project_id = var.project_id
+  site_id    = "${var.project_id}-site-app"
+  app_id     = "${module.web_app.app_id}-app"
+}
+
 output "project_number" {
   value = module.org_project.number
 }
