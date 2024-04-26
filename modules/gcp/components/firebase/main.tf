@@ -86,6 +86,14 @@ module "idp_config" {
   depends_on = [ module.terraform_service_account]
 }
 
+module "web_app" {
+  source = "../../common/firebase_web_app"
+
+  project_id = var.project_id
+
+  depends_on = [ module.firebase_project ]
+}
+
 output "project_number" {
   value = module.org_project.number
 }
