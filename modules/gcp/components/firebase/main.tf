@@ -105,7 +105,7 @@ module "firebase_hosting_site" {
   depends_on = [ module.api_services ]
 }
 
-module "firebase_hosting_site" {
+module "dns_managed_zone" {
   source = "../../common/dns_managed_zone"
 
   project_id = var.project_id
