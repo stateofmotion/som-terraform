@@ -115,6 +115,16 @@ module "dns_managed_zone" {
   depends_on = [ module.api_services ]
 }
 
+module "site_dns_a_record" {
+  source = "../../common/dns_record_set"
+
+  project_id = var.project_id
+  type       = "A"
+  name       = "${var.domain}."
+  zone_name  = module.dns_managed_zone.name
+  rrdatas    = ["199.36.158.100"] # Default firebase A record
+}
+
 module "custom_domain" {
   source = "../../common/firebase_custom_domain"
 

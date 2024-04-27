@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-resource "google_dns_managed_zone" "dns-zone" {
+resource "google_dns_managed_zone" "dns_zone" {
   project     = var.project_id
   name        = var.name
   dns_name    = var.dns_name
@@ -19,4 +19,8 @@ resource "google_dns_managed_zone" "dns-zone" {
   dnssec_config {
     state = "off"
   }
+}
+
+output "name" {
+  value = google_dns_managed_zone.dns_zone.name
 }
