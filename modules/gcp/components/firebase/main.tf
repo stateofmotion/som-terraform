@@ -159,3 +159,7 @@ output "project_number" {
 output "app_id" {
   value = module.web_app.app_id
 }
+
+output "site_id" {
+  value = module.firebase_hosting_site.site_id
+}
