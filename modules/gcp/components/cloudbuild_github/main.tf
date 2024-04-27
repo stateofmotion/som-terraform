@@ -11,12 +11,22 @@ terraform {
   }
 }
 
+module "api_services" {
+  source     = "../../common/api_services"
+  project_id = var.project_id
+  services   = [
+    "secretmanager.googleapis.com",
+  ]
+}
+
 module "my_github_cloudbuild_connection" {
   app_installation_id = var.app_installation_id
   github_token        = var.github_token
   project_id          = var.project_id
   region              = var.region
   source              = "../cloudbuild_github_connection"
+
+  depends_on = [ module.api_services ]
 }
 
 module "repo_and_triggers" {
