@@ -148,6 +148,10 @@ module "custom_domain" {
   ]
 }
 
+output "project_id" {
+  value = module.org_project.project_id
+}
+
 output "project_number" {
   value = module.org_project.number
 }
