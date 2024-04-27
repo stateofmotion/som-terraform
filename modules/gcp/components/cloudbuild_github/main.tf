@@ -16,6 +16,7 @@ module "api_services" {
   project_id = var.project_id
   services   = [
     "secretmanager.googleapis.com",
+    "cloudbuild.googleapis.com"
   ]
 }
 
