@@ -18,7 +18,7 @@ resource "random_string" "zone_suffix" {
 
 resource "google_dns_managed_zone" "dns_zone" {
   project     = var.project_id
-  name        = "${var.name}_${lower(random_string.zone_suffix.result)}"
+  name        = "${var.name}-${lower(random_string.zone_suffix.result)}"
   dns_name    = var.dns_name
   description = var.description
   dnssec_config {
