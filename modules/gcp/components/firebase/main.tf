@@ -134,16 +134,6 @@ module "site_dns_a_record" {
   rrdatas    = ["199.36.158.100"] # Default firebase A record
 }
 
-module "site_dns_txt_record" {
-  source = "../../common/dns_record_set"
-
-  project_id = var.project_id
-  type       = "TXT"
-  name       = "${var.domain}."
-  zone_name  = module.dns_managed_zone.name
-  rrdatas    = ["hosting-site=${module.firebase_hosting_site.site_id}"] # Default firebase A record
-}
-
 module "custom_domain" {
   source = "../../common/firebase_custom_domain"
 
