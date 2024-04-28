@@ -100,7 +100,7 @@ module "web_app" {
 
 data "google_firebase_web_app_config" "basic" {
   provider   = google-beta
-  
+
   project    = var.project_id
   web_app_id = module.web_app.app_id
 }
@@ -171,6 +171,10 @@ output "app_id" {
 
 output "site_id" {
   value = module.firebase_hosting_site.site_id
+}
+
+output "zone_name" {
+  value = module.dns_managed_zone.name
 }
 
 output "firebase_config" {
