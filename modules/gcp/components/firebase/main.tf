@@ -43,7 +43,9 @@ module "api_services" {
     "firestore.googleapis.com",
     "firebasestorage.googleapis.com",
     "firebasehosting.googleapis.com",
-    "dns.googleapis.com"
+    "dns.googleapis.com",
+    "eventarc.googleapis.com",
+    "run.googleapis.com"
   ]
 
   depends_on = [ module.org_project ]
@@ -147,6 +149,20 @@ module "custom_domain" {
     module.dns_managed_zone
   ]
 }
+
+module "cloudbuild_sa_firebase_role" {
+  source = "../../common/project_iam_member"
+  
+  project_id            = var.project_id
+  member                = "serviceAccount:${module.org_project.number}@cloudbuild.gserviceaccount.com"
+  # ! This should really be narrowed down to the required permissions
+  # ! for the build pipe.
+  service_account_role  = "roles/firebase.admin"
+
+  depends_on = [ module.api_services ]
+}
+
+
 
 output "project_id" {
   value = module.org_project.project_id
