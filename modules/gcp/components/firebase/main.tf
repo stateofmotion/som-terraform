@@ -98,6 +98,11 @@ module "web_app" {
   depends_on = [ module.firebase_project ]
 }
 
+data "google_firebase_web_app_config" "basic" {
+  provider   = google-beta
+  web_app_id = module.web_app.app_id
+}
+
 module "firebase_hosting_site" {
   source = "../../common/firebase_hosting_site"
 
@@ -150,20 +155,6 @@ module "custom_domain" {
   ]
 }
 
-module "cloudbuild_sa_firebase_role" {
-  source = "../../common/project_iam_member"
-  
-  project_id            = var.project_id
-  member                = "serviceAccount:${module.org_project.number}@cloudbuild.gserviceaccount.com"
-  # ! This should really be narrowed down to the required permissions
-  # ! for the build pipe.
-  service_account_role  = "roles/firebase.admin"
-
-  depends_on = [ module.api_services ]
-}
-
-
-
 output "project_id" {
   value = module.org_project.project_id
 }
@@ -178,4 +169,16 @@ output "app_id" {
 
 output "site_id" {
   value = module.firebase_hosting_site.site_id
+}
+
+output "firebase_config" {
+  value = {
+    appId              = module.web_app.app_id
+    apiKey             = data.google_firebase_web_app_config.basic.api_key
+    authDomain         = data.google_firebase_web_app_config.basic.auth_domain
+    databaseURL        = lookup(data.google_firebase_web_app_config.basic, "database_url", "")
+    storageBucket      = lookup(data.google_firebase_web_app_config.basic, "storage_bucket", "")
+    messagingSenderId  = lookup(data.google_firebase_web_app_config.basic, "messaging_sender_id", "")
+    measurementId      = lookup(data.google_firebase_web_app_config.basic, "measurement_id", "")
+  }
 }
