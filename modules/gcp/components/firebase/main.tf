@@ -28,44 +28,36 @@ module "terraform_service_account" {
   depends_on = [ module.org_project ]
 }
 
+module "api_services" {
+  source     = "../../common/api_services"
+  
+  project_id = module.firebase.project_id
+  services   = var.enable_apis
+
+  depends_on = [ module.org_project, module.terraform_service_account ]
+}
+
 module "firebase_project" {
   source = "../../common/firebase_project"
  
-  project_id = var.project_id
+  project_id = module.org_project.project_id
 
-  depends_on = [ module.terraform_service_account ]
-}
-
-module "api_services" {
-  source     = "../../common/api_services"
-  project_id = var.project_id
-  services   = [
-    "firestore.googleapis.com",
-    "firebasestorage.googleapis.com",
-    "firebasehosting.googleapis.com",
-    "dns.googleapis.com",
-    "eventarc.googleapis.com",
-    "run.googleapis.com",
-    "pubsub.googleapis.com",
-  ]
-
-  depends_on = [ module.org_project ]
+  depends_on = [ module.api_services ]
 }
 
 module "firestore_database" {
   source     = "../../common/firebase_firestore"
 
-  project_id = var.project_id
+  project_id = module.org_project.project_id
 
   depends_on = [ 
-    module.firebase_project,
     module.api_services
   ]
 }
 
 module "app_engine" {
   source = "../../common/app_engine"
-  project_id            = var.project_id
+  project_id = module.org_project.project_id
 
   depends_on = [ 
     module.firestore_database, 
@@ -75,26 +67,22 @@ module "app_engine" {
 module "firebase_storage_bucket" {
   source = "../../common/firebase_storage_bucket"
  
-  project_id = var.project_id
+  project_id = module.org_project.project_id
   bucket_id  = module.app_engine.default_bucket
-
-  depends_on = [ 
-    module.app_engine
-  ]
 }
 
 module "idp_config" {
   source = "../../common/identity_platform_config"
 
-  project_id = var.project_id
+  project_id = module.org_project.project_id
 
-  depends_on = [ module.terraform_service_account]
+  depends_on = [ module.api_services ]
 }
 
 module "web_app" {
   source = "../../common/firebase_web_app"
 
-  project_id = var.project_id
+  project_id = module.org_project.project_id
 
   depends_on = [ module.firebase_project ]
 }
@@ -102,24 +90,22 @@ module "web_app" {
 data "google_firebase_web_app_config" "basic" {
   provider   = google-beta
 
-  project    = var.project_id
+  project    = module.org_project.project_id
   web_app_id = module.web_app.app_id
 }
 
 module "firebase_hosting_site" {
   source = "../../common/firebase_hosting_site"
 
-  project_id = var.project_id
-  site_id    = "${var.project_id}-site-app"
+  project_id = module.org_project.project_id
+  site_id    = "${module.org_project.project_id}-site-app"
   app_id     = module.web_app.app_id
-
-  depends_on = [ module.api_services ]
 }
 
 module "dns_managed_zone" {
   source = "../../common/dns_managed_zone"
 
-  project_id = var.project_id
+  project_id = module.org_project.project_id
   dns_name   = "${var.domain}."
 
   depends_on = [ module.api_services ]
@@ -133,19 +119,79 @@ module "site_dns_a_record" {
   name       = "${var.domain}."
   zone_name  = module.dns_managed_zone.name
   rrdatas    = ["199.36.158.100"] # Default firebase A record
+
+  depends_on = [ module.api_services ]
+}
+
+module "site_dns_txt_record" {
+  source = "../../common/dns_record_set"
+
+  project_id = var.project_id
+  type       = "TXT"
+  name       = "${var.domain}."
+  zone_name  = module.dns_managed_zone.name
+  ttl        = 3600
+  rrdatas    = concat(
+    ["hosting-site=${module.firebase_hosting_site.site_id}"], 
+    var.root_dns_txt_records
+  )
+}
+
+module "site_dns_mx_record" {
+  source = "../../common/dns_record_set"
+
+  count = length(var.root_dns_mx_records) > 0 ? 1 : 0
+
+  project_id = var.project_id
+  type       = "MX"
+  name       = "${var.domain}."
+  zone_name  = module.dns_managed_zone.name
+  ttl        = 3600
+  rrdatas    = var.root_dns_mx_records
 }
 
 module "custom_domain" {
   source = "../../common/firebase_custom_domain"
 
-  project_id    = var.project_id
+  project_id    = module.org_project.project_id
   site_id       = module.firebase_hosting_site.site_id
   custom_domain = var.domain
 
   depends_on = [ 
-    module.firebase_hosting_site,
     module.dns_managed_zone
   ]
+}
+
+module "simple_secrets" {
+  source = "../simple_secrets"
+
+  region        = var.simple_secrets_location
+  project_id    = module.org_project.project_id
+  secrets       = var.simple_secrets
+
+  depends_on = [ module.api_services ]
+}
+
+module "vite_firebase_config_env_vars" {
+  source      = "../secret"
+
+  count = var.with_vite_firebase_config == true ? 1 : 0
+  
+  name        = "VITE_FIREBASE_CONFIG_ENV_VARS"
+  project_id  = module.firebase.project_id
+  region      = var.simple_secrets_location
+  secret_data = <<DATA
+VITE_API_KEY=${local.firebase_config.apiKey}
+VITE_AUTH_DOMAIN=${local.firebase_config.authDomain}
+VITE_PROJECT_ID=${module.org_project.project_id}
+VITE_STORAGE_BUCKET=${local.firebase_config.storageBucket}
+VITE_MESSAGING_SENDER_ID=${local.firebase_config.messagingSenderId}
+VITE_APP_ID=${local.firebase_config.appId}
+VITE_DATABASE_URL=${local.firebase_config.databaseURL}
+VITE_MEASUREMENT_ID=${local.firebase_config.measurementId}
+DATA
+
+depends_on = [ module.api_services ]
 }
 
 output "project_id" {
@@ -168,8 +214,8 @@ output "zone_name" {
   value = module.dns_managed_zone.name
 }
 
-output "firebase_config" {
-  value = {
+locals {
+  firebase_config = {
     appId              = module.web_app.app_id
     apiKey             = data.google_firebase_web_app_config.basic.api_key
     authDomain         = data.google_firebase_web_app_config.basic.auth_domain
@@ -178,4 +224,8 @@ output "firebase_config" {
     messagingSenderId  = lookup(data.google_firebase_web_app_config.basic, "messaging_sender_id", "")
     measurementId      = lookup(data.google_firebase_web_app_config.basic, "measurement_id", "")
   }
+}
+
+output "firebase_config" {
+  value = local.firebase_config
 }

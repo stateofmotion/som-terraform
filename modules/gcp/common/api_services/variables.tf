@@ -18,7 +18,7 @@ variable "services" {
   Disable dependent APIs when using tf destroy
  */
 variable "disable_on_destroy" {
-  default     = true
+  default     = false
   description = "Disable dependent apis when running tf destroy an api"
   type        = bool
 }

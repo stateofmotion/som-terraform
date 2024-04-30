@@ -69,3 +69,56 @@ variable "domain" {
   description = "Domain name. This is the root of the domain to use in the google zone."
   type        = string
 }
+
+/*
+ * Map of simple secrets to add in
+ */
+variable "simple_secrets" {
+  default     = {}
+  type        = map(string)
+  description = "Map of simple secrets to add in"
+}
+
+/*
+ * Location for simple secrets location
+ */
+variable "simple_secrets_location" {
+  default     = "us-central1"
+  type        = string
+  description = "Location for simple secrets location"
+}
+
+/*
+ * Location for simple secrets location
+ */
+variable "enable_apis" {
+  type        = list(string)
+  description = "APIS to enable"
+}
+
+/*
+ * Location for simple secrets location
+ */
+variable "with_vite_firebase_config" {
+  default     = true
+  type        = bool
+  description = "Automatically create a secret with Vite env vars for firebase config"
+}
+
+/*
+ * Root domain TXT records
+ */
+variable "root_dns_txt_records" {
+  default     = []
+  type        = list(string)
+  description = "Root domain TXT records"
+}
+
+/*
+ * Root MX records
+ */
+variable "root_dns_mx_records" {
+  default     = []
+  type        = list(string)
+  description = "Root domain MX records"
+}
