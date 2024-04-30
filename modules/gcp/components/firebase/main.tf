@@ -45,7 +45,8 @@ module "api_services" {
     "firebasehosting.googleapis.com",
     "dns.googleapis.com",
     "eventarc.googleapis.com",
-    "run.googleapis.com"
+    "run.googleapis.com",
+    "pubsub.googleapis.com",
   ]
 
   depends_on = [ module.org_project ]
