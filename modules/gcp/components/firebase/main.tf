@@ -31,7 +31,7 @@ module "terraform_service_account" {
 module "api_services" {
   source     = "../../common/api_services"
   
-  project_id = module.firebase.project_id
+  project_id = module.org_project.project_id
   services   = var.enable_apis
 
   depends_on = [ module.org_project, module.terraform_service_account ]
