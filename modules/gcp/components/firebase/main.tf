@@ -178,7 +178,7 @@ module "vite_firebase_config_env_vars" {
   count = var.with_vite_firebase_config == true ? 1 : 0
   
   name        = "VITE_FIREBASE_CONFIG_ENV_VARS"
-  project_id  = module.firebase.project_id
+  project_id  = module.org_project.project_id
   region      = var.simple_secrets_location
   secret_data = <<DATA
 VITE_API_KEY=${local.firebase_config.apiKey}
