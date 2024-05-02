@@ -37,13 +37,38 @@ module "api_services" {
   depends_on = [ module.org_project, module.terraform_service_account ]
 }
 
-module "firebase_project" {
-  source = "../../common/firebase_project"
- 
-  project_id = module.org_project.project_id
+module "cloudbuild_gserviceaccount_role" {
+  source     = "../../common/project_role"
+  
+  project_id  = module.org_project.project_id
+  role_id     = "cloudbuildGserviceaccountRole"
+  permissions = var.cloudbuild_gserviceaccount_permissions
 
   depends_on = [ module.api_services ]
 }
+
+module "cloudbuild_gserviceaccount_iam_role_member" {
+  source = "../../common/project_iam_member"
+ 
+  project_id           = module.org_project.project_id
+  member               = "serviceAccount:${module.org_project.number}@cloudbuild.gserviceaccount.com"
+  service_account_role = "projects/${module.org_project.project_id}/roles/${module.cloudbuild_gserviceaccount_role.role_id}"
+
+  depends_on = [ module.cloudbuild_gserviceaccount_role ]
+}
+
+# module "cloudbuild_sa_secret_viewer" {
+#   source = "github.com/stateofmotion/som-terraform/modules/gcp/common/project_iam_member"
+
+#   project_id            = var.project_id
+#   member                = "serviceAccount:${module.firebase.project_number}@cloudbuild.gserviceaccount.com"
+#   # ! This should really be narrowed down to the required permissions
+#   # ! for the build pipe.
+#   service_account_role  = "roles/secretmanager.viewer"
+
+#   depends_on = [ module.cloudbuild_github ]
+# }
+
 
 module "firestore_database" {
   source     = "../../common/firebase_firestore"

@@ -79,6 +79,12 @@ variable "simple_secrets" {
   description = "Map of simple secrets to add in"
 }
 
+variable "cloudbuild_gserviceaccount_permissions" {
+  default     = []
+  type        = list(string)
+  description = "Permissions that need to be added to the @cloudbuild.gserviceaccount.com"
+}
+
 /*
  * Location for simple secrets location
  */
