@@ -77,6 +77,8 @@ module "gcp_sa_cloudbuild" {
 
 module "gcp_sa_cloudbuild_iam_role_member" {
   source = "../../common/project_iam_member"
+
+  count = length(var.gcp_sa_cloudbuild_permissions) > 0 ? 1 : 0
  
   project_id           = module.org_project.project_id
   member               = "serviceAccount:service-${module.org_project.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
