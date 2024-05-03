@@ -60,7 +60,7 @@ module "cloudbuild_gserviceaccount_iam_role_member" {
  
   project_id           = module.org_project.project_id
   member               = "serviceAccount:${module.org_project.number}@cloudbuild.gserviceaccount.com"
-  service_account_role = "projects/${module.org_project.project_id}/roles/${module.cloudbuild_gserviceaccount_role.role_id}"
+  service_account_role = module.cloudbuild_gserviceaccount_role.role_id
 
   depends_on = [ module.cloudbuild_gserviceaccount_role ]
 }
@@ -82,7 +82,7 @@ module "gcp_sa_cloudbuild_iam_role_member" {
  
   project_id           = module.org_project.project_id
   member               = "serviceAccount:service-${module.org_project.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-  service_account_role = "projects/${module.org_project.project_id}/roles/${module.gcp_sa_cloudbuild.role_id}"
+  service_account_role = module.gcp_sa_cloudbuild.role_id
 
   depends_on = [ module.gcp_sa_cloudbuild ]
 }
