@@ -65,6 +65,26 @@ module "cloudbuild_gserviceaccount_iam_role_member" {
   depends_on = [ module.cloudbuild_gserviceaccount_role ]
 }
 
+module "gcp_sa_cloudbuild" {
+  source     = "../../common/project_role"
+  
+  project_id  = module.org_project.project_id
+  role_id     = "gcpSaCloudbuild"
+  permissions = var.gcp_sa_cloudbuild_permissions
+
+  depends_on = [ module.api_services ]
+}
+
+module "cloudbuild_gserviceaccount_iam_role_member" {
+  source = "../../common/project_iam_member"
+ 
+  project_id           = module.org_project.project_id
+  member               = "serviceAccount:service-${module.org_project.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+  service_account_role = "projects/${module.org_project.project_id}/roles/${module.gcp_sa_cloudbuild.role_id}"
+
+  depends_on = [ module.gcp_sa_cloudbuild ]
+}
+
 # module "cloudbuild_sa_secret_viewer" {
 #   source = "github.com/stateofmotion/som-terraform/modules/gcp/common/project_iam_member"
 

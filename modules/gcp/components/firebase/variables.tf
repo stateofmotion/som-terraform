@@ -85,6 +85,12 @@ variable "cloudbuild_gserviceaccount_permissions" {
   description = "Permissions that need to be added to the @cloudbuild.gserviceaccount.com"
 }
 
+variable "gcp_sa_cloudbuild_permissions" {
+  default     = []
+  type        = list(string)
+  description = "Permissions to add to the @gcp-sa-cloudbuild.iam.gserviceaccount.com service account"
+}
+
 /*
  * Location for simple secrets location
  */

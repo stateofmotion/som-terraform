@@ -15,7 +15,7 @@ resource "google_project_iam_custom_role" "project_role" {
   count = length(var.permissions) > 0 ? 1 : 0
   
   project     = var.project_id
-  role_id     = var.role_id
+  role_id     = "projects/${var.project_id}/roles/${var.role_id}"
   title       = "Project Role ${var.role_id}"
   permissions = var.permissions
 }
