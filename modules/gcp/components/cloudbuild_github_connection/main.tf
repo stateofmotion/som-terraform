@@ -23,16 +23,16 @@ module "github_access_token" {
   source      = "../secret"
 }
 
-module "cloudbuild_service_account_read_iam" {
-  source = "../secret_accessor_iam_member"
-  secret_id = module.github_access_token.secret_id
-  project_id = var.project_id
-  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-}
+# module "cloudbuild_service_account_read_iam" {
+#   source = "../secret_accessor_iam_member"
+#   secret_id = module.github_access_token.secret_id
+#   project_id = var.project_id
+#   member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+# }
 
 module "github_connection" {
   app_installation_id        = var.app_installation_id
-  depends_on = [ module.cloudbuild_service_account_read_iam ]
+  # depends_on = [ module.cloudbuild_service_account_read_iam ]
   name                       = var.name
   oauth_token_secret_version = module.github_access_token.name
   project_id                 = var.project_id
