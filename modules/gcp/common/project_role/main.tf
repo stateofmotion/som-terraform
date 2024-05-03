@@ -21,5 +21,5 @@ resource "google_project_iam_custom_role" "project_role" {
 }
 
 output "role_id" {
-  value = google_project_iam_custom_role.project_role[0].id
+  value = length(google_project_iam_custom_role.project_role) > 0 ? google_project_iam_custom_role.project_role[0].id : null
 }

@@ -56,6 +56,8 @@ module "cloudbuild_gserviceaccount_role" {
 }
 
 module "cloudbuild_gserviceaccount_iam_role_member" {
+
+  count = module.cloudbuild_gserviceaccount_role.role_id != null ? 1 : 0
   source = "../../common/project_iam_member"
  
   project_id           = module.org_project.project_id
