@@ -19,6 +19,14 @@ module "org_project" {
   billing_account = var.billing_account
 }
 
+module "firebase_project" {
+  source = "../../common/firebase_project"
+ 
+  project_id = var.project_id
+
+  depends_on = [ module.terraform_service_account ]
+}
+
 module "terraform_service_account" {
   source = "../../common/project_iam_member"
   project_id            = var.project_id
