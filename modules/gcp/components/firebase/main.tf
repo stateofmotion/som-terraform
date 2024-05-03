@@ -75,7 +75,7 @@ module "gcp_sa_cloudbuild" {
   depends_on = [ module.api_services ]
 }
 
-module "cloudbuild_gserviceaccount_iam_role_member" {
+module "gcp_sa_cloudbuild_iam_role_member" {
   source = "../../common/project_iam_member"
  
   project_id           = module.org_project.project_id
